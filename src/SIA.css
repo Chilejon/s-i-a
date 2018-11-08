@@ -1,0 +1,54 @@
+body {
+  padding: 50px;
+  background-color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.entryForm {
+  width: 400%;
+  height: 100%;
+  border: 2px solid rgba(0, 89, 255, 0.308);
+  border-radius: 25px;
+  float: left;
+  padding: 10px;
+}
+
+.imageBorder {
+  width: 300px;
+  border: 2px solid rgba(0, 89, 255, 0.308);
+  border-radius: 25px;
+  float: left;
+  padding: 10px;
+}
+
+.bigImageBorder {
+  width: 500px;
+  border: 2px solid rgba(0, 255, 0.308);
+  border-radius: 25px;
+  float: right;
+  padding: 10px;
+}
+
+.bigImageBorder img {
+  width: 100%;
+}
+
+.searchBorder {
+  border: 2px solid rgba(0, 89, 255, 0.308);
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.wrapper {
+}
+
+.left {
+  float: left;
+  clear: left;
+  width: 200px;
+}
+.right {
+  float: right;
+  clear: right;
+  width: 600px;
+}
