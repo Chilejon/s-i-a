@@ -19,28 +19,28 @@ class ImageDetails extends Component {
 
   render() {
     return (
-      <section>
-        <section className="imageBorder">
-          <p>{this.state.title}</p>
-          <img
-            src={imgSrc + this.state.AccessionNo + ".jpg"}
-            text={this.state.title}
-          />
-          <button
-            onClick={() => {
-              this.props.showImage(
-                this.state.AccessionNo,
-                this.state.title,
-                this.state.description,
-                this.state.area,
-                this.state.dateofimage,
-                this.state.classno
-              );
-            }}
-          >
-            Show more
-          </button>
-        </section>
+      <section className="imageBorder">
+        <h3>{this.state.title}</h3>
+
+        <img
+          src={imgSrc + this.state.AccessionNo + ".jpg"}
+          text={this.state.title}
+        />
+        <button
+          className="showMoreButton"
+          onClick={() => {
+            this.props.showImage(
+              this.state.AccessionNo,
+              this.state.title,
+              this.state.description,
+              this.state.area,
+              this.state.dateofimage,
+              this.state.classno
+            );
+          }}
+        >
+          Show more
+        </button>
       </section>
     );
   }

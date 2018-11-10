@@ -131,7 +131,7 @@ class App extends Component {
     return (
       <section>
         <Column flexGrow={1}>
-          <Row horizontal="center">
+          <Row horizontal="left">
             <section className="searchBorder">
               <form onSubmit={this.searchTitle}>
                 <p>Search </p>
@@ -140,6 +140,7 @@ class App extends Component {
                   id="title"
                   ref={title => (this.title = title)}
                   required
+                  size="16"
                 />
                 <select
                   id="searchWhat"
@@ -162,7 +163,9 @@ class App extends Component {
                 {this.state.isLoading ? (
                   <img src={loading} alt={"loading"} width="20" height="20" />
                 ) : (
-                  <button type="submit">search</button>
+                  <button className="showMoreButton" type="submit">
+                    search
+                  </button>
                 )}
               </form>
 
@@ -171,33 +174,33 @@ class App extends Component {
               )}
 
               {this.state.Images === null ? (
-                <section>No images found for {this.state.searchTerm}</section>
+                <section>
+                  No images found for <strong>{this.state.searchTerm}</strong>
+                </section>
               ) : (
                 this.state.searchTerm !== "" && (
-                  <section>Searched for {this.state.searchTerm}</section>
+                  <section>
+                    Searched for <strong>{this.state.searchTerm}</strong>
+                  </section>
                 )
               )}
             </section>
           </Row>
           <Row vertical="top">
-            <Column flexGrow={1} horizontal="center">
-              <section>{images}</section>
+            <Column flexGrow={1} horizontal="left">
+              {images}
             </Column>
-            <Column flexGrow={1} horizontal="center">
-              <section>
-                {this.state.imageDetails.title !== "" && (
-                  <section>
-                    <FullDetails
-                      title={this.state.imageDetails.title}
-                      description={this.state.imageDetails.description}
-                      area={this.state.imageDetails.area}
-                      AccessionNo={this.state.imageDetails.AccessionNo.trim()}
-                      classno={this.state.imageDetails.classno}
-                      dateofimage={this.state.imageDetails.dateofimage}
-                    />
-                  </section>
-                )}
-              </section>
+            <Column flexGrow={1} horizontal="right">
+              {this.state.imageDetails.title !== "" && (
+                <FullDetails
+                  title={this.state.imageDetails.title}
+                  description={this.state.imageDetails.description}
+                  area={this.state.imageDetails.area}
+                  AccessionNo={this.state.imageDetails.AccessionNo.trim()}
+                  classno={this.state.imageDetails.classno}
+                  dateofimage={this.state.imageDetails.dateofimage}
+                />
+              )}
             </Column>
           </Row>
         </Column>
