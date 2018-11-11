@@ -22,6 +22,8 @@ class App extends Component {
     this.state = {
       Images: [],
       Areas: [],
+      DisplayMissCount: 0,
+      DisplayCount: 5,
       imageDetails: {
         title: "",
         description: "",
@@ -40,6 +42,7 @@ class App extends Component {
     };
     this.searchTitle = this.searchTitle.bind(this);
     this.showImage = this.showImage.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   componentDidMount() {
@@ -107,21 +110,28 @@ class App extends Component {
     window.scrollTo(0, 0);
   }
 
+  goBack() {
+    alert("go back");
+  }
+
   render() {
     if (this.state.Images !== null) {
+      var imagesDisplayedCount = 0;
       var images = this.state.Images.map(Images => {
-        return (
-          <ImageDetails
-            title={Images.title}
-            AccessionNo={Images.AccessionNo.trim()}
-            description={Images.description.trim()}
-            area={Images.area}
-            dateofimage={Images.dateofimage.trim()}
-            classno={Images.classno.trim()}
-            getImage={this.getImage}
-            showImage={this.showImage}
-          />
-        );
+        imagesDisplayedCount = imagesDisplayedCount + 1;
+        if (imagesDisplayedCount <= this.state.DisplayCount)
+          return (
+            <ImageDetails
+              title={Images.title}
+              AccessionNo={Images.AccessionNo.trim()}
+              description={Images.description.trim()}
+              area={Images.area}
+              dateofimage={Images.dateofimage.trim()}
+              classno={Images.classno.trim()}
+              getImage={this.getImage}
+              showImage={this.showImage}
+            />
+          );
       });
     } else {
     }
@@ -188,6 +198,13 @@ class App extends Component {
           </Row>
           <Row vertical="top">
             <Column flexGrow={1} horizontal="left">
+              {this.state.searchTerm !== "" && (
+                <section>
+                  <button onClick={this.goBack()}>Back</button>
+                  {this.state.DisplayCount}
+                  <button>Forward</button>
+                </section>
+              )}
               {images}
             </Column>
             <Column flexGrow={1} horizontal="right">
