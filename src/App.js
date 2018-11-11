@@ -43,6 +43,7 @@ class App extends Component {
     this.searchTitle = this.searchTitle.bind(this);
     this.showImage = this.showImage.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.goForward = this.goForward.bind(this);
   }
 
   componentDidMount() {
@@ -58,6 +59,7 @@ class App extends Component {
     }
   }
   searchTitle(e) {
+    alert("me doing search on api");
     this.setState({ Images: [], isLoading: true });
     var apiLink = "";
     switch (this.searchWhat.value) {
@@ -111,27 +113,44 @@ class App extends Component {
   }
 
   goBack() {
-    alert("go back");
+    var tempValue = this.state.DisplayMissCount;
+    var tempValue2 = this.state.DisplayCount;
+    this.setState({
+      DisplayMissCount: tempValue - tempValue2
+    });
+  }
+
+  goForward() {
+    var tempValue = this.state.DisplayMissCount;
+    var tempValue2 = this.state.DisplayCount;
+    this.setState({
+      DisplayMissCount: tempValue + tempValue2
+    });
   }
 
   render() {
     if (this.state.Images !== null) {
-      var imagesDisplayedCount = 0;
+      var imagesDisplayedCount = 1;
+      var imagesInTotal = 0;
       var images = this.state.Images.map(Images => {
-        imagesDisplayedCount = imagesDisplayedCount + 1;
-        if (imagesDisplayedCount <= this.state.DisplayCount)
-          return (
-            <ImageDetails
-              title={Images.title}
-              AccessionNo={Images.AccessionNo.trim()}
-              description={Images.description.trim()}
-              area={Images.area}
-              dateofimage={Images.dateofimage.trim()}
-              classno={Images.classno.trim()}
-              getImage={this.getImage}
-              showImage={this.showImage}
-            />
-          );
+        imagesInTotal = imagesInTotal + 1;
+        if (imagesInTotal > this.state.DisplayMissCount) {
+          if (imagesDisplayedCount <= this.state.DisplayCount) {
+            imagesDisplayedCount = imagesDisplayedCount + 1;
+            return (
+              <ImageDetails
+                title={Images.title}
+                AccessionNo={Images.AccessionNo.trim()}
+                description={Images.description.trim()}
+                area={Images.area}
+                dateofimage={Images.dateofimage.trim()}
+                classno={Images.classno.trim()}
+                getImage={this.getImage}
+                showImage={this.showImage}
+              />
+            );
+          }
+        }
       });
     } else {
     }
@@ -200,9 +219,21 @@ class App extends Component {
             <Column flexGrow={1} horizontal="left">
               {this.state.searchTerm !== "" && (
                 <section>
-                  <button onClick={this.goBack()}>Back</button>
+                  <button
+                    onClick={() => {
+                      this.goBack();
+                    }}
+                  >
+                    Back
+                  </button>
                   {this.state.DisplayCount}
-                  <button>Forward</button>
+                  <button
+                    onClick={() => {
+                      this.goForward();
+                    }}
+                  >
+                    Forward
+                  </button>
                 </section>
               )}
               {images}
