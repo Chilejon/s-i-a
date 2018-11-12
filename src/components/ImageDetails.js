@@ -15,17 +15,34 @@ class ImageDetails extends Component {
       area: this.props.area,
       ImageDetails: {}
     };
+    this.checkImageExists = this.checkImageExists.bind(this);
+  }
+
+  checkImageExists(image_url) {
+    var http = new XMLHttpRequest();
+
+    http.open("HEAD", image_url, false);
+    http.send();
+
+    if (http.status === 404) {
+      return "http://www.wellesleysocietyofartists.org/wp-content/uploads/2015/11/image-not-found.jpg";
+    } else {
+      return image_url;
+    }
   }
 
   render() {
+    var imgSrcConfirmed = imgSrc + this.state.AccessionNo + ".jpg";
+
+    imgSrcConfirmed = this.checkImageExists(
+      imgSrc + this.state.AccessionNo + ".jpg"
+    );
+
     return (
       <section className="imageBorder">
         <h3>{this.state.title}</h3>
 
-        <img
-          src={imgSrc + this.state.AccessionNo + ".jpg"}
-          text={this.state.title}
-        />
+        <img src={imgSrcConfirmed} text={this.state.title} width="100" />
         <button
           className="showMoreButton"
           onClick={() => {
