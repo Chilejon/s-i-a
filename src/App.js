@@ -42,8 +42,7 @@ class App extends Component {
     };
     this.searchTitle = this.searchTitle.bind(this);
     this.showImage = this.showImage.bind(this);
-    this.goBack = this.goBack.bind(this);
-    this.goForward = this.goForward.bind(this);
+    this.moveBackFwd = this.moveBackFwd.bind(this);
   }
 
   componentDidMount() {
@@ -59,8 +58,12 @@ class App extends Component {
     }
   }
   searchTitle(e) {
-    alert("me doing search on api");
-    this.setState({ Images: [], isLoading: true });
+    //alert("me doing search on api");
+    this.setState({
+      Images: [],
+      isLoading: true,
+      DisplayCount: this.PaginationSize.value
+    });
     var apiLink = "";
     switch (this.searchWhat.value) {
       case "all":
@@ -112,19 +115,19 @@ class App extends Component {
     window.scrollTo(0, 0);
   }
 
-  goBack() {
-    var tempValue = this.state.DisplayMissCount;
-    var tempValue2 = this.state.DisplayCount;
-    this.setState({
-      DisplayMissCount: tempValue - tempValue2
-    });
-  }
+  moveBackFwd(direction) {
+    var newDisplayMissCount = 0;
 
-  goForward() {
-    var tempValue = this.state.DisplayMissCount;
-    var tempValue2 = this.state.DisplayCount;
+    if (direction === "fwd") {
+      newDisplayMissCount =
+        this.state.DisplayMissCount + this.state.DisplayCount;
+    } else {
+      newDisplayMissCount =
+        this.state.DisplayMissCount - this.state.DisplayCount;
+    }
+
     this.setState({
-      DisplayMissCount: tempValue + tempValue2
+      DisplayMissCount: newDisplayMissCount
     });
   }
 
@@ -188,6 +191,20 @@ class App extends Component {
                     </option>
                   ))}
                 </select>
+                <select
+                  id="PaginationSize"
+                  ref={input => (this.PaginationSize = input)}
+                >
+                  <option key="5" value="5">
+                    5
+                  </option>
+                  <option key="10" value="10">
+                    10
+                  </option>
+                  <option key="20" value="20">
+                    20
+                  </option>
+                </select>
 
                 {this.state.isLoading ? (
                   <img src={loading} alt={"loading"} width="20" height="20" />
@@ -221,7 +238,7 @@ class App extends Component {
                 <section>
                   <button
                     onClick={() => {
-                      this.goBack();
+                      this.moveBackFwd("back");
                     }}
                   >
                     Back
@@ -229,7 +246,7 @@ class App extends Component {
                   {this.state.DisplayCount}
                   <button
                     onClick={() => {
-                      this.goForward();
+                      this.moveBackFwd("fwd");
                     }}
                   >
                     Forward
