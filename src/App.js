@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ImageDetails from "./components/ImageDetails";
 import FullDetails from "./components/FullDetails";
+import SearchForm from "./components/SearchForm";
 import { Column, Row } from "simple-flexbox";
 import loading from "./images/smLoading.gif";
 
@@ -57,30 +58,24 @@ class App extends Component {
         });
     }
   }
-  searchTitle(e) {
-    //alert("me doing search on api");
+  searchTitle(PaginationSize, title, area, searchWhat) {
     this.setState({
       Images: [],
       isLoading: true,
-      DisplayCount: this.PaginationSize.value
+      DisplayCount: PaginationSize.value
     });
     var apiLink = "";
-    switch (this.searchWhat.value) {
-      case "all":
-        apiLink = GetPhotosSearchAll + this.title.value;
+    switch (searchWhat.value) {
+      case "1":
+        apiLink = GetPhotosSearchAll + title.value;
         break;
-      case "title":
-        apiLink = GetPhotosSearchTitle + this.title.value;
+      case "2":
+        apiLink = GetPhotosSearchTitle + title.value;
         break;
-      case "allarea":
-        apiLink =
-          GetPhotosByTermAndArea +
-          this.title.value +
-          "&area=" +
-          this.Areas.value;
+      case "3":
+        apiLink = GetPhotosByTermAndArea + title.value + "&area=" + area.value;
         break;
     }
-
     fetch(apiLink)
       .then(response => response.json())
       .then(json => {
@@ -95,8 +90,11 @@ class App extends Component {
         title: ""
       })
     );
+    alert("dkjdjd " + this.state.Images);
+    alert(apiLink);
+
     this.setState({ searchTerm: this.title.value });
-    e.preventDefault();
+    this.preventDefault();
     this.title.value = "";
     this.searchWhat.value = "title";
   }
@@ -164,73 +162,26 @@ class App extends Component {
       <section>
         <Column flexGrow={1}>
           <Row horizontal="left">
-            <section className="searchBorder">
-              <form onSubmit={this.searchTitle}>
-                <p>Search </p>
-                <label>Title:</label>
-                <input
-                  id="title"
-                  ref={title => (this.title = title)}
-                  required
-                  size="16"
-                />
-                <select
-                  id="searchWhat"
-                  ref={input => (this.searchWhat = input)}
-                >
-                  {this.state.searchWhat.map(dd => (
-                    <option key={dd.id} value={dd.id}>
-                      {dd.value}
-                    </option>
-                  ))}
-                </select>
-                <select id="Areas" ref={input => (this.Areas = input)}>
-                  {this.state.Areas.map(dd => (
-                    <option key={dd.ID} value={dd.ID}>
-                      {dd.Area1}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  id="PaginationSize"
-                  ref={input => (this.PaginationSize = input)}
-                >
-                  <option key="5" value="5">
-                    5
-                  </option>
-                  <option key="10" value="10">
-                    10
-                  </option>
-                  <option key="20" value="20">
-                    20
-                  </option>
-                </select>
+            <SearchForm
+              Areas={this.state.Areas}
+              searchTitle={this.searchTitle}
+            />
 
-                {this.state.isLoading ? (
-                  <img src={loading} alt={"loading"} width="20" height="20" />
-                ) : (
-                  <button className="showMoreButton" type="submit">
-                    search
-                  </button>
-                )}
-              </form>
+            {this.state.Images !== null && (
+              <section>Image count: {this.state.Images.length} </section>
+            )}
 
-              {this.state.Images !== null && (
-                <section>Image count: {this.state.Images.length} </section>
-              )}
-
-              {this.state.Images === null ? (
+            {this.state.Images === null ? (
+              <section>
+                No images found for <strong>{this.state.searchTerm}</strong>
+              </section>
+            ) : (
+              this.state.searchTerm !== "" && (
                 <section>
-                  No images found for <strong>{this.state.searchTerm}</strong>
+                  Searched for <strong>{this.state.searchTerm}</strong>
                 </section>
-              ) : (
-                this.state.searchTerm !== "" && (
-                  <section>
-                    Searched for <strong>{this.state.searchTerm}</strong>
-                  </section>
-                )
-              )}
-            </section>
+              )
+            )}
           </Row>
           <Row vertical="top">
             <Column flexGrow={1} horizontal="left">
