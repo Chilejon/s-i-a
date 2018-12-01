@@ -92,11 +92,11 @@ class App extends Component {
     );
     alert("dkjdjd " + this.state.Images);
     alert(apiLink);
-
-    this.setState({ searchTerm: this.title.value });
-    this.preventDefault();
-    this.title.value = "";
-    this.searchWhat.value = "title";
+    alert(this.state.Images);
+    this.setState({ searchTerm: title });
+    //this.preventDefault();
+    //title = "";
+    //this.searchWhat.value = "title";
   }
 
   showImage(AccessionNo, title, description, area, dateofimage, classno) {
